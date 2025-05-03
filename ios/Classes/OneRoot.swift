@@ -50,7 +50,7 @@ import UIKit
     }
 
     @objc public static func isDangerousFiles() -> Bool {
-        guard TARGET_IPHONE_SIMULATOR != 1 else { return false }
+        guard UIDevice.isSimulator == false else { return false }
         let paths = [
             "/usr/sbin/frida-server", // frida
             "/etc/apt/sources.list.d/electra.list", // electra
@@ -217,4 +217,14 @@ import UIKit
     @objc public static func isSimulator() -> Bool {
         return buildphase() || runtime()
     }
+}
+
+extension UIDevice {
+    static var isSimulator: Bool = {
+        #if targetEnvironment(simulator)
+        return true
+        #else
+        return false
+        #endif
+    }()
 }
